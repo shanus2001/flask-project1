@@ -52,14 +52,14 @@
 					<div class="card horizontal">
 						<div class="card-stacked">
 							<div class="card-content">
-								<h1>{{i[0]}}</h1>
+								<h1>{{i.mytitle}}</h1>
 							</div>
 							<div class="card-content">
-								<h2>{{i[1]}}</h2>
+								<h2>{{i.mymessage}}</h2>
 						  </div>
 						</div>
 					</div>
-					<form action="/deletethisdata/{{i[0]}}" method="POST">
+					<form action="/deletethisdata/{{i.a}}" method="POST">
 					  <button type="submit"> delete this</button>
 					</form>
 			  </div>

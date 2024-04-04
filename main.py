@@ -1,6 +1,7 @@
 from flask import Flask
 from flask import render_template,request,redirect
 from flask_sqlalchemy import SQLAlchemy
+# from sqlalchemy import delete
 # import mysql.connector
 # conn=mysql.connector.connect(host="localhost",username="root",password="Yamaha@8763",database="flaskdata")
 # cuser=conn.cursor()
@@ -22,12 +23,16 @@ def homepage():
 @app.route("/about")
 def aboutuss():
     return render_template("myap/aboutus.html")
+
 @app.route("/services")
 def myservices():
+    data=Contactus.query.all()
+    # print(data, "sdsdsd")
+    # data=db.fetchall()
     # cuser.execute("select * from flasksave")
     # data=cuser.fetchall()
-    # return render_template("myap/services.html",mydata=data)
-    return render_template("myap/services.html")
+    return render_template("myap/services.html",mydata=data)
+    # return render_template("myap/services.html")
 @app.route("/contact")
 def contactus():
     return render_template("contact.html")
@@ -42,10 +47,12 @@ def savethisdata():
         db.session.add(data)
         db.session.commit()
         return redirect("/contact")
-# @app.route("/deletethisdata/<a>",methods=["POST"])
-# def deletedata(a):
+@app.route("/deletethisdata/<a>",methods=["POST"])
+def deletedata(a):
+    # delete.query.filter_by(a)
+    
 #     cuser.execute(f" delete from flasksave where title='{a}'")
-#     return redirect("/services")
+    return redirect("/services")
 
 
 if __name__ =="__main__":
