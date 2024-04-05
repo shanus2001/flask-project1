@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block abc %}
+<form style="padding: 60px;" action="/nowupdatedata/{{yourdata.myid}}" method="POST">
+    <div class="mb-3">
+      <label for="exampleInputEmail1" class="form-label">Todo title</label>
+      <input type="text"  value="{{yourdata.mytitle}}"class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="enter todo title" name="title">
+    </div>
+    <div class="mb-3">
+      <label for="exampleFormControlTextarea1" class="form-label">Description</label>
+      <textarea name="msg" class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Enetr your Description mesage"
+      required>{{yourdata.mymessage}}</textarea>
+    </div>
+    <div style="text-align:center">
+        <button type="submit" class="btn btn-primary">update</button>
+    </div>
+  </form>
+{% endblock  abc%}

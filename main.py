@@ -47,13 +47,32 @@ def savethisdata():
         db.session.add(data)
         db.session.commit()
         return redirect("/contact")
-@app.route("/deletethisdata/<a>",methods=["POST"])
-def deletedata(a):
-    # delete.query.filter_by(a)
+@app.route("/deletethisdata/<int:myid>",methods=["POST"])
+def deletedata(myid):
+    user=Contactus.query.get(myid)
+    db.session.delete(user)
+    db.session.commit()
+
+    
     
 #     cuser.execute(f" delete from flasksave where title='{a}'")
     return redirect("/services")
+@app.route("/updatethisdata/<int:myid>",methods=["POST"])  
+def updatedata(myid):
+    thisdata=Contactus.query.get(myid)
+    return render_template("update.html",yourdata=thisdata)
 
+@app.route("/nowupdatedata/<int:myid>",methods=["POST"])
+def nowupdatedata(myid):
+    if request.method=="POST":
+        titles=request.form.get("title")
+        message=request.form.get("msg")
+        data=Contactus.query.get(myid)
+        data.mytitle = titles
+        data.mymessage = message
+        db.session.commit()
+        return redirect("/services")
+    
 
 if __name__ =="__main__":
     app.run(debug=True)
