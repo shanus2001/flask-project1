@@ -50,11 +50,9 @@ def savethisdata():
 @app.route("/deletethisdata/<int:myid>",methods=["POST"])
 def deletedata(myid):
     user=Contactus.query.get(myid)
+    # (same as.... )user=Contactus.query.filter_by(myid).first()
     db.session.delete(user)
     db.session.commit()
-
-    
-    
 #     cuser.execute(f" delete from flasksave where title='{a}'")
     return redirect("/services")
 @app.route("/updatethisdata/<int:myid>",methods=["POST"])  
