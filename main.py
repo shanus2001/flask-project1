@@ -1,19 +1,30 @@
 from flask import Flask
-from flask import render_template,request,redirect
+from flask import render_template,request,redirect,flash
 from flask_sqlalchemy import SQLAlchemy
+import os
+from flask_mail import Mail, Message
 # from sqlalchemy import delete
 # import mysql.connector
 # conn=mysql.connector.connect(host="localhost",username="root",password="Yamaha@8763",database="flaskdata")
 # cuser=conn.cursor()
 app=Flask(__name__)
+app.secret_key="sdgewfhkgewkgufekggfewkj"
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///firstdb.db"
 db=SQLAlchemy(app)
 class Contactus(db.Model):
     myid=db.Column(db.Integer,primary_key=True,autoincrement=True)
     mytitle=db.Column(db.String(120))
     mymessage=db.Column(db.Text)
+    myimage=db.Column(db.String(220))
 with app.app_context():    
-   db.create_all()    
+   db.create_all()  
+app.config['MAIL_SERVER']='smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = 'shanuchoudharyvikas@gmail.com'
+app.config['MAIL_PASSWORD'] = 'efya knqk dsre wmjq'
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+mail = Mail(app)      
 # @app.route("/")
 # def basefile():
 #     return render_template("base.html")
@@ -41,11 +52,20 @@ def savethisdata():
     if request.method=="POST":
         titles=request.form.get("title")
         message=request.form.get("msg")
+        imageee=request.files.get("img")
+        if imageee:
+            imageee.save(os.path.join("static/images",imageee.filename))
+            path=os.path.join("static/images",imageee.filename)
         # cuser.execute(f"insert into flasksave values('{titles}','{message}')")
         # conn.commit()
-        data=Contactus(mytitle=titles,mymessage=message)
+        data=Contactus(mytitle=titles,mymessage=message,myimage=path)
         db.session.add(data)
         db.session.commit()
+        msg = Message( 'Hello', sender ='shanuchoudharyvikas@gmail.com', recipients = ['shanuchoudharyvikas@gmail.com'] 
+               ) 
+        msg.body = 'Hello Flask message sent from Flask-Mail'
+        mail.send(msg) 
+        flash("data added successfully")
         return redirect("/contact")
 @app.route("/deletethisdata/<int:myid>",methods=["POST"])
 def deletedata(myid):
